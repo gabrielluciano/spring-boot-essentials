@@ -2,7 +2,7 @@ package br.com.devdojo.endpoint;
 
 import br.com.devdojo.error.CustomErrorType;
 import br.com.devdojo.model.Student;
-import br.com.devdojo.util.DateUtil;
+import br.com.devdojo.repository.StudentRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -15,55 +15,52 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.time.LocalDateTime;
 import java.util.Optional;
 
 @RestController
 @RequestMapping("students")
 public class StudentEndpoint {
 
-    private DateUtil dateUtil;
+    private final StudentRepository studentDAO;
 
     @Autowired
-    public StudentEndpoint(DateUtil dateUtil) {
-        this.dateUtil = dateUtil;
+    public StudentEndpoint(StudentRepository studentDAO) {
+        this.studentDAO = studentDAO;
     }
 
     @GetMapping
     public ResponseEntity<?> listAll() {
-//        System.out.println(dateUtil.formatLocalDateTimeToDatabaseStyle(LocalDateTime.now()));
-        return new ResponseEntity<>(Student.studentList, HttpStatus.OK);
+        return new ResponseEntity<>(studentDAO.findAll(), HttpStatus.OK);
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<?> getStudentById(@PathVariable("id") int id) {
-        Optional<Student> studentOptional = Student.studentList.stream()
-                .filter(student -> student.getId() == id)
-                .findFirst();
+    public ResponseEntity<?> getStudentById(@PathVariable("id") Long id) {
+        Optional<Student> studentOptional = studentDAO.findById(id);
 
         return studentOptional.isPresent() ?
                 new ResponseEntity<>(studentOptional.get(), HttpStatus.OK) :
-                new ResponseEntity<>(new CustomErrorType("Student not found"),
-                        HttpStatus.NOT_FOUND);
+                new ResponseEntity<>(new CustomErrorType("Student not found"), HttpStatus.NOT_FOUND);
+    }
+
+    @GetMapping("/findByName/{name}")
+    public ResponseEntity<?> findStudentsByName(@PathVariable String name) {
+        return new ResponseEntity<>(studentDAO.findByNameIgnoreCaseContaining(name), HttpStatus.OK);
     }
 
     @PostMapping
     public ResponseEntity<?> save(@RequestBody Student student) {
-        Student.studentList.add(student);
-        return new ResponseEntity<>(student, HttpStatus.CREATED);
+        return new ResponseEntity<>(studentDAO.save(student), HttpStatus.CREATED);
     }
 
-    @DeleteMapping
-    public ResponseEntity<?> delete(@RequestBody Student student) {
-        boolean deleted = Student.studentList.remove(student);
-        return new ResponseEntity<>(deleted ? HttpStatus.NO_CONTENT : HttpStatus.NOT_FOUND);
+    @DeleteMapping("/{id}")
+    public ResponseEntity<?> delete(@PathVariable Long id) {
+        studentDAO.deleteById(id);
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 
     @PutMapping
     public ResponseEntity<?> update(@RequestBody Student student) {
-        Student.studentList.remove(student);
-        Student.studentList.add(student);
-        return new ResponseEntity<>(HttpStatus.OK);
+        studentDAO.save(student);
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 }
-
