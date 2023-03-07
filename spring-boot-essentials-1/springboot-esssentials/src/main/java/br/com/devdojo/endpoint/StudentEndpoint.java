@@ -16,6 +16,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.validation.Valid;
+
 @RestController
 @RequestMapping("students")
 public class StudentEndpoint {
@@ -45,12 +47,7 @@ public class StudentEndpoint {
 
     @PostMapping
     @Transactional
-    public ResponseEntity<?> save(@RequestBody Student student) {
-        studentDAO.save(student);
-        studentDAO.save(student);
-        if(true)
-            throw new RuntimeException("Test transaction");
-        studentDAO.save(student);
+    public ResponseEntity<?> save(@Valid @RequestBody Student student) {
         return new ResponseEntity<>(studentDAO.save(student), HttpStatus.CREATED);
     }
 

@@ -1,6 +1,17 @@
 package br.com.devdojo.error;
 
-public class ResourceNotFoundDetails extends ErrorDetail {
+public class ValidationErrorDetails extends ErrorDetail {
+
+    private String field;
+    private String fieldMessage;
+
+    public String getField() {
+        return field;
+    }
+
+    public String getFieldMessage() {
+        return fieldMessage;
+    }
 
     public static final class Builder {
         private String title;
@@ -8,6 +19,8 @@ public class ResourceNotFoundDetails extends ErrorDetail {
         private String detail;
         private long timestamp;
         private String developerMessage;
+        private String field;
+        private String fieldMessage;
 
         private Builder() {
         }
@@ -41,14 +54,27 @@ public class ResourceNotFoundDetails extends ErrorDetail {
             return this;
         }
 
-        public ResourceNotFoundDetails build() {
-            var build = new ResourceNotFoundDetails();
+        public Builder field(String field) {
+            this.field = field;
+            return this;
+        }
+
+        public Builder fieldMessage(String fieldMessage) {
+            this.fieldMessage = fieldMessage;
+            return this;
+        }
+
+        public ValidationErrorDetails build() {
+            var build = new ValidationErrorDetails();
             build.setTitle(title);
             build.setStatus(status);
             build.setDetail(detail);
             build.setTimestamp(timestamp);
             build.setDeveloperMessage(developerMessage);
+            build.field = field;
+            build.fieldMessage = fieldMessage;
             return build;
         }
     }
+
 }
