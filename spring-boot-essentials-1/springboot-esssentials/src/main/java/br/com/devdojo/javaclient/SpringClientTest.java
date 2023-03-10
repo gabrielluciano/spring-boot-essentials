@@ -7,13 +7,16 @@ public class SpringClientTest {
     public static void main(String[] args) {
 
         Student student = new Student();
-        student.setName("Mário");
-        student.setEmail("mario@mail.com");
+        student.setName("Mário Souza");
+        student.setEmail("mariosza@mail.com");
+        student.setId(17L);
 
         JavaClientDAO dao = new JavaClientDAO();
 
-        System.out.println(dao.findById(12L));
-        System.out.println(dao.listAll());
-        System.out.println(dao.save(student));
+//        System.out.println(dao.findById(12L));
+//        System.out.println(dao.listAll());
+//        System.out.println(dao.save(student));
+//        dao.update(student);
+        dao.delete(80L);
     }
 }
