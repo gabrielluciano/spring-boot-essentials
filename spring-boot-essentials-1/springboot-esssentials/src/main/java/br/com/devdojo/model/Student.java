@@ -35,6 +35,7 @@ public class Student extends AbstractEntity {
         return "Student{" +
                 "name='" + name + '\'' +
                 ", email='" + email + '\'' +
+                ", id='" + getId() + '\'' +
                 '}';
     }
 }
