@@ -35,7 +35,7 @@ public class StudentEndpoint {
 
     @GetMapping("protected/students")
     public ResponseEntity<?> listAll(Pageable pageable) {
-        return new ResponseEntity<>(studentDAO.findAll(), HttpStatus.OK);
+        return new ResponseEntity<>(studentDAO.findAll(pageable), HttpStatus.OK);
     }
 
     @GetMapping("protected/students/{id}")
