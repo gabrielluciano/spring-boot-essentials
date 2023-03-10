@@ -1,28 +1,63 @@
 package br.com.devdojo.error;
 
-public class ValidationErrorDetails extends ErrorDetails {
+public class ErrorDetails {
 
-    private String field;
-    private String fieldMessage;
+    private String title;
+    private int status;
+    private String detail;
+    private long timestamp;
+    private String developerMessage;
 
-    public String getField() {
-        return field;
+    public String getTitle() {
+        return title;
     }
 
-    public String getFieldMessage() {
-        return fieldMessage;
+    public void setTitle(String title) {
+        this.title = title;
+    }
+
+    public int getStatus() {
+        return status;
+    }
+
+    public void setStatus(int status) {
+        this.status = status;
+    }
+
+    public String getDetail() {
+        return detail;
+    }
+
+    public void setDetail(String detail) {
+        this.detail = detail;
+    }
+
+    public long getTimestamp() {
+        return timestamp;
+    }
+
+    public void setTimestamp(long timestamp) {
+        this.timestamp = timestamp;
+    }
+
+    public String getDeveloperMessage() {
+        return developerMessage;
+    }
+
+    public void setDeveloperMessage(String developerMessage) {
+        this.developerMessage = developerMessage;
     }
 
     public static final class Builder {
+
         private String title;
         private int status;
         private String detail;
         private long timestamp;
         private String developerMessage;
-        private String field;
-        private String fieldMessage;
 
         private Builder() {
+
         }
 
         public static Builder newBuilder() {
@@ -54,27 +89,14 @@ public class ValidationErrorDetails extends ErrorDetails {
             return this;
         }
 
-        public Builder field(String field) {
-            this.field = field;
-            return this;
-        }
-
-        public Builder fieldMessage(String fieldMessage) {
-            this.fieldMessage = fieldMessage;
-            return this;
-        }
-
-        public ValidationErrorDetails build() {
-            var build = new ValidationErrorDetails();
+        public ErrorDetails build() {
+            var build = new ErrorDetails();
             build.setTitle(title);
             build.setStatus(status);
             build.setDetail(detail);
             build.setTimestamp(timestamp);
             build.setDeveloperMessage(developerMessage);
-            build.field = field;
-            build.fieldMessage = fieldMessage;
             return build;
         }
     }
-
 }
