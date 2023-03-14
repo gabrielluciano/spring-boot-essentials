@@ -5,19 +5,20 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
 
 @Entity
 public class User extends AbstractEntity {
 
-    @NotEmpty
+    @NotNull
     @Column(unique = true)
     private String username;
 
-    @NotEmpty
+    @NotNull
     @JsonIgnore
     private String password;
 
-    @NotEmpty
+    @NotNull
     private String name;
 
     @NotEmpty
