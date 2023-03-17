@@ -76,4 +76,5 @@ public class StudentEndpoint {
         if (studentDAO.findById(id).isEmpty())
             throw new ResourceNotFoundException("Student not found for id: " + id);
     }
+
 }
