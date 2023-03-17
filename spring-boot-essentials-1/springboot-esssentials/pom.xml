@@ -12,6 +12,9 @@
 	<artifactId>demo</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 	<name>springboot-essentials</name>
+
+	<packaging>jar</packaging>
+
 	<description>Curso de Spring Boot do canal DevDojo</description>
 	<properties>
 		<java.version>11</java.version>
@@ -69,10 +72,14 @@
 	</dependencies>
 
 	<build>
+		<finalName>devdojo</finalName>
 		<plugins>
 			<plugin>
 				<groupId>org.springframework.boot</groupId>
 				<artifactId>spring-boot-maven-plugin</artifactId>
+				<configuration>
+					<executable>true</executable>
+				</configuration>
 			</plugin>
 		</plugins>
 	</build>
