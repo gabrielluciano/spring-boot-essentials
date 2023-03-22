@@ -1,6 +1,7 @@
 package academy.devdojo.springbootessentials.service;
 
 import academy.devdojo.springbootessentials.domain.Anime;
+import academy.devdojo.springbootessentials.mapper.AnimeMapper;
 import academy.devdojo.springbootessentials.repository.AnimeRepository;
 import academy.devdojo.springbootessentials.requests.AnimePostRequestBody;
 import academy.devdojo.springbootessentials.requests.AnimePutRequestBody;
@@ -27,18 +28,14 @@ public class AnimeService {
     }
 
     public Anime save(AnimePostRequestBody animePostRequestBody) {
-        Anime anime = Anime.builder()
-                .name(animePostRequestBody.getName())
-                .build();
+        Anime anime = AnimeMapper.INSTANCE.toAnime(animePostRequestBody);
         return animeRepository.save(anime);
     }
 
     public void replace(AnimePutRequestBody animePutRequestBody) {
         Anime animeFromDb = findByIdOrThrowBadRequestException(animePutRequestBody.getId());
-        Anime anime = Anime.builder()
-                .id(animeFromDb.getId())
-                .name(animePutRequestBody.getName())
-                .build();
+        Anime anime = AnimeMapper.INSTANCE.toAnime(animePutRequestBody);
+        anime.setId(animeFromDb.getId());
         animeRepository.save(anime);
     }
 
