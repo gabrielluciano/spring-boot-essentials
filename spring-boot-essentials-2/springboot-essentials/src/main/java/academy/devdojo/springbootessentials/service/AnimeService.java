@@ -7,11 +7,8 @@ import academy.devdojo.springbootessentials.repository.AnimeRepository;
 import academy.devdojo.springbootessentials.requests.AnimePostRequestBody;
 import academy.devdojo.springbootessentials.requests.AnimePutRequestBody;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
-import org.springframework.web.server.ResponseStatusException;
 
-import javax.transaction.Transactional;
 import java.util.List;
 
 @Service
@@ -33,13 +30,9 @@ public class AnimeService {
         return animeRepository.findByName(name);
     }
 
-    @Transactional(rollbackOn = Exception.class)
     public Anime save(AnimePostRequestBody animePostRequestBody) {
         Anime anime = AnimeMapper.INSTANCE.toAnime(animePostRequestBody);
-        anime = animeRepository.save(anime);
-        if (true)
-            throw new RuntimeException("bad code");
-        return anime;
+        return animeRepository.save(anime);
     }
 
     public void replace(AnimePutRequestBody animePutRequestBody) {
