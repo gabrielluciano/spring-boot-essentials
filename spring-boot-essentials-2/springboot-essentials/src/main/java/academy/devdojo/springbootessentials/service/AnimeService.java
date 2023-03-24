@@ -19,8 +19,12 @@ public class AnimeService {
 
     private final AnimeRepository animeRepository;
 
-    public Page<Anime> listAll(Pageable pageable) {
+    public Page<Anime> listPaged(Pageable pageable) {
         return animeRepository.findAll(pageable);
+    }
+
+    public List<Anime> listAll() {
+        return animeRepository.findAll();
     }
 
     public Anime findByIdOrThrowBadRequestException(long id) {
