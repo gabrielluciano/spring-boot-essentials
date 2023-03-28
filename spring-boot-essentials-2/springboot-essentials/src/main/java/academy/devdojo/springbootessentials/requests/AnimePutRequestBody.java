@@ -1,5 +1,6 @@
 package academy.devdojo.springbootessentials.requests;
 
+import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -8,6 +9,7 @@ import javax.validation.constraints.NotNull;
 
 @Getter
 @Setter
+@Builder
 public class AnimePutRequestBody {
 
     @NotNull(message = "The anime id cannot be null")
