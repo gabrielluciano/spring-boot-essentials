@@ -5,8 +5,12 @@ import academy.devdojo.springbootessentials.requests.AnimePostRequestBody;
 import academy.devdojo.springbootessentials.requests.AnimePutRequestBody;
 import academy.devdojo.springbootessentials.service.AnimeService;
 import academy.devdojo.springbootessentials.util.DateUtil;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
+import org.springdoc.api.annotations.ParameterObject;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
@@ -40,7 +44,11 @@ public class AnimeController {
     private final AnimeService animeService;
 
     @GetMapping
-    public ResponseEntity<Page<Anime>> list(Pageable pageable) {
+    @Operation(summary = "List all animes paginated",
+            description = "The default size is 20, use the parameter size to change the default value",
+            tags = {"anime"}
+    )
+    public ResponseEntity<Page<Anime>> list(@ParameterObject Pageable pageable) {
         log.info(dateUtil.formatLocalDateTimeToDatabaseStyle(LocalDateTime.now()));
         return ResponseEntity.ok(animeService.listPaged(pageable));
     }
@@ -71,7 +79,7 @@ public class AnimeController {
     @PostMapping
     @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<Anime> save(@RequestBody @Valid AnimePostRequestBody animePostRequestBody) {
-        return new ResponseEntity<>(animeService.save(animePostRequestBody),  HttpStatus.CREATED);
+        return new ResponseEntity<>(animeService.save(animePostRequestBody), HttpStatus.CREATED);
     }
 
     @PutMapping
@@ -81,6 +89,10 @@ public class AnimeController {
     }
 
     @DeleteMapping("admin/{id}")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "204", description = "Successful Operation"),
+            @ApiResponse(responseCode = "400", description = "Anime Not Found"),
+    })
     public ResponseEntity<Void> delete(@PathVariable long id) {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         animeService.delete(id);
