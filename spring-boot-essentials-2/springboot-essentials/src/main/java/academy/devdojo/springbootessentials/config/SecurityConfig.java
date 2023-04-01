@@ -43,6 +43,7 @@ public class SecurityConfig {
                 .authorizeHttpRequests()
                     .mvcMatchers("/animes/admin/**").hasRole("ADMIN")
                     .mvcMatchers("/animes/**").hasRole("USER")
+                    .mvcMatchers("/actuator/**").permitAll()
                     .anyRequest().authenticated()
                 .and().formLogin()
                 .and().httpBasic()
