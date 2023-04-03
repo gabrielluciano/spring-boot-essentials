@@ -18,6 +18,8 @@
 		<java.version>17</java.version>
 		<org.mapstruct.version>1.5.3.Final</org.mapstruct.version>
 		<org.springdoc.version>1.6.15</org.springdoc.version>
+		<jib-maven-plugin.version>3.3.1</jib-maven-plugin.version>
+		<docker.distroless.image>grc.io/distroless/java</docker.distroless.image>
 	</properties>
 
 	<dependencies>
@@ -161,6 +163,25 @@
 							<version>${org.mapstruct.version}</version>
 						</path>
 					</annotationProcessorPaths>
+				</configuration>
+			</plugin>
+			<plugin>
+				<groupId>com.google.cloud.tools</groupId>
+				<artifactId>jib-maven-plugin</artifactId>
+				<version>${jib-maven-plugin.version}</version>
+				<configuration>
+					<from>
+						<image>${docker.distroless.image}</image>
+					</from>
+					<to>
+						<image>${project.groupId}/${project.artifactId}</image>
+						<tags>
+							<tag>${project.version}</tag>
+						</tags>
+					</to>
+					<container>
+						<mainClass>academy.devdojo.springbootessentials.SpringbootEssentialsApplication</mainClass>
+					</container>
 				</configuration>
 			</plugin>
 		</plugins>
